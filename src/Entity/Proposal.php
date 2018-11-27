@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,14 +29,21 @@ class Proposal
     private $content;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="proposals")
      */
-    private $user_id;
+    private $author;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="proposal")
      */
-    private $proposal_id;
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -65,27 +74,47 @@ class Proposal
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getAuthor(): ?User
     {
-        return $this->user_id;
+        return $this->author;
     }
 
-    public function setUserId(int $user_id): self
+    public function setAuthor(?User $author): self
     {
-        $this->user_id = $user_id;
+        $this->author = $author;
 
         return $this;
     }
 
-    public function getProposalId(): ?int
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
     {
-        return $this->proposal_id;
+        return $this->comments;
     }
 
-    public function setProposalId(int $proposal_id): self
+    public function addComment(Comment $comment): self
     {
-        $this->proposal_id = $proposal_id;
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setProposal($this);
+        }
 
         return $this;
     }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getProposal() === $this) {
+                $comment->setProposal(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
