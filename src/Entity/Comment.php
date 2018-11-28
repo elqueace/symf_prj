@@ -33,13 +33,6 @@ class Comment
      */
     private $proposal;
 
-
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
-
-
     public function getId(): ?int
     {
         return $this->id;

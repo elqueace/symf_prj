@@ -37,7 +37,8 @@ class ProposalFixtures extends Fixture
             $faq = (new Proposal())
                 ->setContent($faker->sentence)
                 ->setMark(0)
-                ->setAuthor($author);
+                ->setAuthor($author)
+                ->setPosition($i);
             $manager->persist($faq);
 
         }

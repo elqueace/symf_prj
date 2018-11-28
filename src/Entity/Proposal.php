@@ -2,15 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\SortablePositionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use App\Entity\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProposalRepository")
  */
 class Proposal
 {
+    use TimestampableTrait;
+    use SortablePositionTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -37,6 +43,7 @@ class Proposal
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="proposal")
      */
     private $comments;
+
 
     public function __construct()
     {

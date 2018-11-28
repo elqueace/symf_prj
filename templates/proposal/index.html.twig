@@ -20,6 +20,9 @@
                 <td>{{ proposal.id }}</td>
                 <td>{{ proposal.mark }}</td>
                 <td>{{ proposal.content }}</td>
+                <td>{{ proposal.createdAt | date("d-m-Y")}}</td>
+                <td>{{ proposal.updatedAt | date}}</td>
+
                 <td>
                     <a href="{{ path('proposal_show', {'id': proposal.id}) }}">show</a>
                     <a href="{{ path('proposal_edit', {'id': proposal.id}) }}">edit</a>
